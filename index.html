@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Interativo do Mercado de TI no Brasil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone/Slate with Sky Blue Accent) -->
+    <!-- Application Structure Plan: A single-page application with a sticky top navigation bar for quick access to thematic sections: 1. Market Overview (key stats), 2. Top Opportunities (interactive chart), 3. Essential Technologies (tabbed view), 4. How to Get Qualified (skills & certs), and 5. Recommendations. This structure transforms the linear report into an explorable dashboard, allowing users to navigate based on their interests, which is more engaging and user-friendly than a simple long-scroll page. The core interaction is the clickable chart, which directly connects high-level data with specific, actionable details. -->
+    <!-- Visualization & Content Choices: Market Overview uses animated counters and a simple bar chart to show the talent gap. Top Opportunities uses an interactive bar chart (Chart.js) where clicks update a details panel. Essential Technologies uses a tabbed layout (JS) to organize content without clutter. How to Get Qualified uses accordions (JS) for lists of certifications. This approach prioritizes user interaction and data exploration over passive reading. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .active-tab {
+            border-bottom-color: #0284c7;
+            color: #0284c7;
+        }
+        .stat-card h3 {
+            transition: color 0.3s ease;
+        }
+        .stat-card:hover h3 {
+            color: #0284c7;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-slate-900">Mercado de TI no Brasil</h1>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#panorama" class="text-slate-600 hover:text-sky-600 transition">Panorama</a>
+                <a href="#vagas" class="text-slate-600 hover:text-sky-600 transition">Vagas</a>
+                <a href="#tecnologias" class="text-slate-600 hover:text-sky-600 transition">Tecnologias</a>
+                <a href="#qualificacao" class="text-slate-600 hover:text-sky-600 transition">Qualificação</a>
+                <a href="#recomendacoes" class="text-slate-600 hover:text-sky-600 transition">Recomendações</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-stone-100">
+                <span class="block w-6 h-0.5 bg-current"></span>
+                <span class="block w-6 h-0.5 bg-current mt-1.5"></span>
+                <span class="block w-6 h-0.5 bg-current mt-1.5"></span>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col space-y-3">
+            <a href="#panorama" class="block text-slate-600 hover:text-sky-600 transition">Panorama</a>
+            <a href="#vagas" class="block text-slate-600 hover:text-sky-600 transition">Vagas</a>
+            <a href="#tecnologias" class="block text-slate-600 hover:text-sky-600 transition">Tecnologias</a>
+            <a href="#qualificacao" class="block text-slate-600 hover:text-sky-600 transition">Qualificação</a>
+            <a href="#recomendacoes" class="block text-slate-600 hover:text-sky-600 transition">Recomendações</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section id="panorama" class="text-center mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Um Mercado Aquecido com Oportunidades Gigantes</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 mb-10">O setor de TI no Brasil vive uma expansão acelerada, superando mercados globais. No entanto, um grande déficit de talentos cria um cenário único, com alta demanda e valorização profissional. Explore os números que definem este momento.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto mb-12">
+                <div class="stat-card bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                    <h3 class="text-4xl md:text-5xl font-bold text-sky-600 mb-2" id="stat-growth">0%</h3>
+                    <p class="text-slate-500 font-medium">Crescimento Projetado para 2025</p>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                    <h3 class="text-4xl md:text-5xl font-bold text-sky-600 mb-2" id="stat-demand">0 mil</h3>
+                    <p class="text-slate-500 font-medium">Demanda Anual por Talentos</p>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                    <h3 class="text-4xl md:text-5xl font-bold text-sky-600 mb-2" id="stat-deficit">0 mil</h3>
+                    <p class="text-slate-500 font-medium">Déficit de Profissionais até 2025</p>
+                </div>
+            </div>
+            <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                <h4 class="font-semibold text-lg text-slate-800 mb-4">O Descompasso: Demanda vs. Formação Anual</h4>
+                <div class="chart-container h-48 md:h-64 !max-h-[250px]">
+                    <canvas id="talentGapChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="vagas" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-4">Vagas em Destaque: Onde Estão as Oportunidades?</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 text-center mb-10">Os cargos de desenvolvimento lideram em volume, mas áreas estratégicas como IA, dados e segurança estão em forte ascensão. Clique nas barras do gráfico para explorar os detalhes de cada função e descobrir qual se encaixa melhor no seu perfil.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-md border border-stone-200">
+                    <div class="chart-container">
+                        <canvas id="topRolesChart"></canvas>
+                    </div>
+                </div>
+                <div id="role-details-panel" class="bg-white p-6 rounded-xl shadow-md border border-stone-200 min-h-[300px] lg:sticky top-28">
+                    <h3 id="details-title" class="text-xl font-bold text-slate-900 mb-3">Selecione um Cargo</h3>
+                    <p id="details-description" class="text-slate-600 mb-4">Clique em uma das barras do gráfico para ver os detalhes da função, incluindo descrição, faixa salarial e as principais habilidades necessárias.</p>
+                    <div id="details-salary" class="text-lg font-semibold text-sky-700 mb-4"></div>
+                    <div id="details-tags" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tecnologias" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-4">Tecnologias Essenciais</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 text-center mb-10">Dominar as ferramentas certas é crucial. Navegue pelas abas para descobrir as linguagens, frameworks e plataformas que o mercado mais valoriza em diferentes áreas de atuação.</p>
+            <div class="bg-white rounded-xl shadow-md border border-stone-200 p-2 sm:p-4">
+                <div class="border-b border-stone-200 mb-6">
+                    <nav class="-mb-px flex space-x-4 sm:space-x-8" aria-label="Tabs">
+                        <button class="tab-button active-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="linguagens">Linguagens & Frameworks</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 border-transparent" data-tab="plataformas">Plataformas & Ferramentas</button>
+                        <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 border-transparent" data-tab="erp">ERP & Big Data</button>
+                    </nav>
+                </div>
+                <div id="tab-content">
+                </div>
+            </div>
+        </section>
+
+        <section id="qualificacao" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-4">Como se Qualificar para o Sucesso</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 text-center mb-10">Em um mercado competitivo, a qualificação contínua é a chave. Além das habilidades técnicas, as competências comportamentais são cada vez mais decisivas. Veja o que você precisa para se destacar.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Hard Skills (Habilidades Técnicas)</h3>
+                    <ul id="hard-skills-list" class="space-y-2 text-slate-600"></ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Soft Skills (Habilidades Comportamentais)</h3>
+                    <ul id="soft-skills-list" class="space-y-2 text-slate-600"></ul>
+                </div>
+            </div>
+            <div class="mt-8 bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                <h3 class="text-xl font-bold text-slate-900 mb-4">Cursos e Certificações Valorizadas</h3>
+                <p class="text-slate-600 mb-6">Certificações validam seu conhecimento e te colocam à frente da concorrência. Clique nos itens abaixo para ver algumas das mais importantes do mercado.</p>
+                <div id="certifications-accordion" class="space-y-3"></div>
+            </div>
+        </section>
+
+        <section id="recomendacoes" class="bg-sky-700 text-white rounded-xl p-8 md:p-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Recomendações Estratégicas</h2>
+            <p class="max-w-3xl mx-auto text-sky-100 text-center mb-8">Para prosperar neste mercado, é preciso mais do que conhecimento técnico. É necessário um plano de carreira. Aqui estão os passos essenciais para você construir uma trajetória de sucesso e impacto no setor de TI brasileiro.</p>
+            <div id="recommendations-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-sm">
+            <p>Painel Interativo desenvolvido com base no relatório "O Mercado de Trabalho em TI no Brasil".</p>
+            <p>&copy; 2025 Análise de Mercado de TI. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const appData = {
+                stats: {
+                    growth: 13,
+                    demand: 159,
+                    deficit: 797,
+                    supply: 53
+                },
+                roles: [
+                    { name: 'Desenvolvedor Back-end', vagas: 21802, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Responsável pela lógica de negócios, banco de dados e integração de APIs.', tags: ['Java', 'Python', 'C#', 'Node.js', 'SQL', 'APIs'] },
+                    { name: 'Desenvolvedor Front-end', vagas: 18680, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Cria a interface visual e interativa com a qual os usuários interagem.', tags: ['JavaScript', 'React', 'Angular', 'Vue.js', 'HTML5', 'CSS3'] },
+                    { name: 'Engenheiro de Software', vagas: 12870, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Projeta, desenvolve e mantém sistemas de software complexos e escaláveis.', tags: ['Arquitetura', 'DevOps', 'Cloud', 'Qualidade', 'Performance'] },
+                    { name: 'Product Manager', vagas: 12005, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Define a visão, estratégia e roadmap do produto, atuando na interface entre negócio e tecnologia.', tags: ['Estratégia', 'Roadmap', 'Agile', 'UX', 'Dados'] },
+                    { name: 'Desenvolvedor Full-stack', vagas: 8366, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Atua tanto no desenvolvimento front-end quanto back-end de aplicações.', tags: ['React', 'Node.js', 'Python', 'Java', 'Banco de Dados'] },
+                    { name: 'Especialista em Cibersegurança', vagas: 5120, salary: 'R$ 3.000 - R$ 25.000+', desc: 'Protege sistemas, redes e dados contra ataques cibernéticos. Implementa e gerencia políticas e ferramentas de segurança.', tags: ['Redes', 'Firewalls', 'SIEM', 'Análise Forense', 'Penetration Testing'] },
+                    { name: 'Analista de BI', vagas: 3781, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Transforma dados brutos em insights acionáveis para decisões de negócio.', tags: ['Power BI', 'Tableau', 'SQL', 'ETL', 'Dashboards'] },
+                    { name: 'Desenvolvedor de IA', vagas: 3550, salary: 'R$ 4.000 - R$ 25.000+', desc: 'Desenvolve e integra soluções de inteligência artificial em produtos e serviços, focando na aplicação prática de modelos.', tags: ['Python', 'NLP', 'Visão Computacional', 'APIs de IA', 'TensorFlow', 'PyTorch'] },
+                    { name: 'Especialista em ML', vagas: 3414, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Desenvolve e implementa algoritmos de aprendizado de máquina.', tags: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'IA'] },
+                    { name: 'Engenheiro de Dados', vagas: 2928, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Constrói e otimiza a infraestrutura para coleta, armazenamento e processamento de dados.', tags: ['Spark', 'Hadoop', 'Kafka', 'SQL', 'Cloud', 'ETL'] },
+                    { name: 'Cientista de Dados', vagas: 2213, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Analisa grandes volumes de dados para identificar padrões e prever tendências.', tags: ['Python', 'R', 'Estatística', 'Machine Learning', 'SQL'] },
+                    { name: 'Scrum Master', vagas: 2093, salary: 'R$ 1.500 - R$ 20.000+', desc: 'Facilita equipes ágeis, removendo impedimentos e garantindo a adesão às práticas Scrum.', tags: ['Agile', 'Scrum', 'Kanban', 'Liderança', 'Comunicação'] }
+                ],
+                technologies: {
+                    linguagens: `
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-slate-800 mb-3">Front-end</h4>
+                                <p class="text-sm text-slate-600 mb-4">Criação de interfaces dinâmicas e interativas.</p>
+                                <div class="space-y-2">
+                                    <div class="bg-stone-100 p-3 rounded-lg"><strong>Linguagens:</strong> JavaScript, TypeScript</div>
+                                    <div class="bg-stone-100 p-3 rounded-lg"><strong>Frameworks:</strong> React, Angular, Vue.js</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 mb-3">Back-end</h4>
+                                <p class="text-sm text-slate-600 mb-4">Desenvolvimento da lógica de negócios e APIs.</p>
+                                <div class="space-y-2">
+                                    <div class="bg-stone-100 p-3 rounded-lg"><strong>Linguagens:</strong> Java, Python, C#, PHP</div>
+                                    <div class="bg-stone-100 p-3 rounded-lg"><strong>Frameworks:</strong> Spring Boot, Django, ASP.NET Core</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 mb-3">Data Science & IA</h4>
+                                <p class="text-sm text-slate-600 mb-4">Análise de dados e construção de modelos.</p>
+                                <div class="space-y-2">
+                                    <div class="bg-stone-100 p-3 rounded-lg"><strong>Linguagens:</strong> Python, R</div>
+                                    <div class="bg-stone-100 p-3 rounded-lg"><strong>Frameworks:</strong> TensorFlow, PyTorch, Scikit-learn</div>
+                                </div>
+                            </div>
+                        </div>`,
+                    plataformas: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div><h4 class="font-semibold text-slate-800 mb-3">Cloud Computing</h4><p class="text-sm text-slate-600">Infraestrutura escalável. Domínio em <strong>AWS, Microsoft Azure e Google Cloud Platform (GCP)</strong> é essencial.</p></div>
+                            <div><h4 class="font-semibold text-slate-800 mb-3">Análise de Dados & BI</h4><p class="text-sm text-slate-600">Visualização de dados para negócios. Ferramentas como <strong>Power BI, Tableau e Qlikview</strong> são as mais usadas.</p></div>
+                            <div><h4 class="font-semibold text-slate-800 mb-3">DevOps & Automação</h4><p class="text-sm text-slate-600">Integração e entrega contínua. Conhecimento em <strong>Jenkins, Git, Kubernetes e Docker</strong> é fundamental.</p></div>
+                            <div><h4 class="font-semibold text-slate-800 mb-3">Segurança da Informação</h4><p class="text-sm text-slate-600">Proteção de sistemas e dados. Ferramentas como <strong>SIEM, Firewalls e IPS/IDS</strong> são cruciais.</p></div>
+                        </div>`,
+                    erp: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><h4 class="font-semibold text-slate-800 mb-3">Sistemas ERP (SAP)</h4><p class="text-sm text-slate-600">A SAP tem forte presença no Brasil. Conhecimento em <strong>S/4 HANA</strong> e <strong>SAP Cloud Platform (BTP)</strong> está em alta. A linguagem <strong>ABAP</strong> continua relevante para customizações e migrações.</p></div>
+                            <div><h4 class="font-semibold text-slate-800 mb-3">Big Data</h4><p class="text-sm text-slate-600">O Brasil lidera o uso na América Latina. Ferramentas como <strong>Apache Spark, Hadoop e Kafka</strong> são essenciais para processar grandes volumes de dados e extrair valor.</p></div>
+                        </div>`
+                },
+                skills: {
+                    hard: ['Linguagens (JavaScript, Python, Java)', 'Plataformas de Nuvem (AWS, Azure, GCP)', 'Banco de Dados (SQL e NoSQL)', 'Ferramentas de BI (Power BI, Tableau)', 'Cibersegurança e Ferramentas SIEM', 'Frameworks de IA/ML (TensorFlow, PyTorch)', 'DevOps (CI/CD, Kubernetes, Docker)'],
+                    soft: ['Comunicação e Colaboração', 'Pensamento Analítico e Crítico', 'Resolução de Problemas Complexos', 'Flexibilidade e Adaptabilidade', 'Proatividade e Liderança', 'Ética Profissional', 'Aprendizado Contínuo (Lifelong Learning)']
+                },
+                certifications: [
+                    { name: 'AWS Certified Solutions Architect', desc: 'Valida a habilidade de projetar e implantar sistemas escaláveis e seguros na AWS, a líder de mercado em nuvem.' },
+                    { name: 'PMP (Project Management Professional)', desc: 'Certificação crucial para líderes de projeto, validando experiência em gestão, liderança e execução de projetos complexos.' },
+                    { name: 'CISSP (Certified Information Systems Security Professional)', desc: 'Uma das certificações mais respeitadas em segurança da informação, cobrindo um vasto conhecimento em cibersegurança.' },
+                    { name: 'Microsoft Certified: Azure Solutions Architect Expert', desc: 'Equivalente da Microsoft à certificação da AWS, focada em projetar soluções robustas na plataforma Azure.' },
+                    { name: 'ITIL Foundation', desc: 'Essencial para gerenciamento de serviços de TI, focando em planejamento, entrega e suporte para alinhar a TI aos negócios.' }
+                ],
+                recommendations: [
+                    { title: 'Base Sólida e Versátil', text: 'Domine linguagens como JavaScript, Python e Java e seus principais frameworks (React, Django, Spring Boot).' },
+                    { title: 'Especialize-se Estrategicamente', text: 'Foque em áreas de alto crescimento como IA/ML, Cibersegurança, Engenharia de Dados e Cloud Computing.' },
+                    { title: 'Domine as Ferramentas Chave', text: 'Aprofunde-se em plataformas como AWS/Azure, ferramentas de BI como Power BI e práticas DevOps com Kubernetes.' },
+                    { title: 'Invista em Qualificação', text: 'Busque certificações de mercado (AWS, PMP, CISSP) e considere bootcamps para aprendizado prático e rápido.' },
+                    { title: 'Desenvolva Soft Skills', text: 'Aprimore sua comunicação, colaboração e pensamento crítico. A TI hoje é uma parceira estratégica do negócio.' },
+                    { title: 'Seja Flexível', text: 'Considere oportunidades em polos tecnológicos e busque empresas com modelos de trabalho flexíveis (híbrido/remoto).' }
+                ]
+            };
+
+            const animateValue = (obj, start, end, duration, suffix = '') => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('pt-BR') + suffix;
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateValue(document.getElementById('stat-growth'), 0, appData.stats.growth, 1500, '%');
+                        animateValue(document.getElementById('stat-demand'), 0, appData.stats.demand, 1500, ' mil');
+                        animateValue(document.getElementById('stat-deficit'), 0, appData.stats.deficit, 1500, ' mil');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            observer.observe(document.getElementById('panorama'));
+
+            const talentGapCtx = document.getElementById('talentGapChart').getContext('2d');
+            new Chart(talentGapCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Demanda Anual', 'Profissionais Formados'],
+                    datasets: [{
+                        label: 'Profissionais (em milhares)',
+                        data: [appData.stats.demand, appData.stats.supply],
+                        backgroundColor: ['#0284c7', '#f59e0b'],
+                        borderColor: ['#0369a1', '#d97706'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} mil`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+            
+            const rolesCtx = document.getElementById('topRolesChart').getContext('2d');
+            const topRolesChart = new Chart(rolesCtx, {
+                type: 'bar',
+                data: {
+                    labels: appData.roles.map(r => r.name.length > 25 ? r.name.match(/.{1,25}/g) : r.name),
+                    datasets: [{
+                        label: 'Número de Vagas',
+                        data: appData.roles.map(r => r.vagas),
+                        backgroundColor: '#0ea5e9',
+                        borderColor: '#0284c7',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        hoverBackgroundColor: '#0369a1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Vagas: ${context.raw.toLocaleString('pt-BR')}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            updateRoleDetails(index);
+                            
+                            topRolesChart.data.datasets[0].backgroundColor = appData.roles.map((_, i) => i === index ? '#0369a1' : '#0ea5e9');
+                            topRolesChart.update();
+                        }
+                    }
+                }
+            });
+
+            const updateRoleDetails = (index) => {
+                const role = appData.roles[index];
+                document.getElementById('details-title').textContent = role.name;
+                document.getElementById('details-description').textContent = role.desc;
+                document.getElementById('details-salary').textContent = `Faixa Salarial: ${role.salary}`;
+                const tagsContainer = document.getElementById('details-tags');
+                tagsContainer.innerHTML = role.tags.map(tag => `<span class="bg-sky-100 text-sky-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${tag}</span>`).join('');
+            };
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContentContainer = document.getElementById('tab-content');
+            
+            const updateTabContent = (tabId) => {
+                tabContentContainer.innerHTML = appData.technologies[tabId];
+            };
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active-tab');
+                        btn.classList.add('text-slate-500', 'hover:text-slate-700', 'border-transparent');
+                    });
+                    button.classList.add('active-tab');
+                    button.classList.remove('text-slate-500', 'hover:text-slate-700', 'border-transparent');
+                    updateTabContent(button.dataset.tab);
+                });
+            });
+            updateTabContent('linguagens');
+
+            document.getElementById('hard-skills-list').innerHTML = appData.skills.hard.map(skill => `
+                <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">✓</span>${skill}</li>`).join('');
+            document.getElementById('soft-skills-list').innerHTML = appData.skills.soft.map(skill => `
+                <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">✓</span>${skill}</li>`).join('');
+
+            const accordionContainer = document.getElementById('certifications-accordion');
+            accordionContainer.innerHTML = appData.certifications.map((cert, index) => `
+                <div>
+                    <h2>
+                        <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-slate-700 bg-stone-100 rounded-lg hover:bg-stone-200 focus:ring-2 focus:ring-sky-200" data-accordion-target="accordion-body-${index}">
+                            <span>${cert.name}</span>
+                            <span class="accordion-icon transform transition-transform duration-200">▼</span>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-${index}" class="hidden p-4 border border-t-0 border-stone-200 rounded-b-lg">
+                        <p class="text-slate-600">${cert.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            accordionContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('button[data-accordion-target]');
+                if (button) {
+                    const targetId = button.getAttribute('data-accordion-target');
+                    const targetPanel = document.getElementById(targetId);
+                    const icon = button.querySelector('.accordion-icon');
+                    const isExpanded = !targetPanel.classList.contains('hidden');
+                    targetPanel.classList.toggle('hidden');
+                    icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
+            });
+
+            document.getElementById('recommendations-list').innerHTML = appData.recommendations.map(rec => `
+                <div class="bg-sky-600 p-5 rounded-lg">
+                    <h4 class="font-bold mb-2">${rec.title}</h4>
+                    <p class="text-sky-100 text-sm">${rec.text}</p>
+                </div>
+            `).join('');
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
