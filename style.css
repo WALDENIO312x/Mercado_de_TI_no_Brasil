@@ -1,0 +1,27 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    max-height: 50vh;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 450px;
+    }
+}
+.active-tab {
+    border-bottom-color: #0284c7;
+    color: #0284c7;
+}
+.stat-card h3 {
+    transition: color 0.3s ease;
+}
+.stat-card:hover h3 {
+    color: #0284c7;
+}
